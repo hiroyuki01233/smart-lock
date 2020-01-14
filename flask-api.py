@@ -44,5 +44,17 @@ def close():
     print("close!")
     return "close"
 
+@app.route("/check_key")
+@auth.login_required
+def check_key():
+    global check_key
+    if check_key == 0:
+        return "0"
+    elif check_key == 1:
+        return "1"
+    else:
+        return "else"
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='192.168.3.5', port="port")

@@ -37,6 +37,26 @@ def callback():
        abort(400)
    return 'OK'
 
+def check_key():
+    # 送信先のURL
+    url = ''
+    # Basic認証の情報
+    user = ''
+    password = ''
+    # Basic認証用の文字列を作成.
+    basic_user_and_pasword = base64.b64encode('{}:{}'.format(user, password).encode('utf-8'))
+    # Basic認証付きの、GETリクエストを作成する.
+    request = urllib.request.Request(url, 
+        headers={"Authorization": "Basic " + basic_user_and_pasword.decode('utf-8')})
+    # 送信して、レスポンスを受け取る.
+    with urllib.request.urlopen(request) as res:
+        data = res.read()
+        data = str(data)
+        data = data[2]
+        if data == "0":
+            send_message("閉まっているわん！")
+        elif data == "1":
+            send_message("開いているわん！")
 
 # MessageEvent
 @handler.add(MessageEvent, message=TextMessage)
